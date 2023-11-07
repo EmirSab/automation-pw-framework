@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "Playwright web and api automation framework.",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test --headed",
+    "test:ci": "playwright test"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/EmirSab/automation-pw-framework.git"

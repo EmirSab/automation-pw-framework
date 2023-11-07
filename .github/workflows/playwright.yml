@@ -8,5 +8,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Say hello
-        run: echo Hello
+      - name: Run tests
+        run: |
+          echo "Install dependencies from lockfile"
+          npm ci
+          echo "Run playwright tests"
+          npm run test:ci
