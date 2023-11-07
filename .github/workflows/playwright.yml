@@ -16,6 +16,8 @@ jobs:
           npm ci
           echo "Run playwright tests"
           npm run test:ci
+          echo "Generate reports"
+          npm run test:report
       - name: Use Java
         uses: actions/checkout@v3
         with:
@@ -27,5 +29,3 @@ jobs:
         with:
           name: Test Results
           path: test-results
-      - name: Generate report
-        run: npm run test:report
