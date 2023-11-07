@@ -17,9 +17,9 @@ jobs:
           echo "Run playwright tests"
           npm run test:ci
       - name: Use Java
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Emir
-        uses: AdoptOpenJDK/install-jdk@v1
+        uses: AdoptOpenJDK/install-jdk@v2
         with:
           version: '13'
           architecture: x64
