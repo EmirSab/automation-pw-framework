@@ -5,6 +5,8 @@ on:
 jobs:
   playwrighttests:
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.39.0-focal
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
