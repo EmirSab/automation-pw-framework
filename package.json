@@ -1,0 +1,22 @@
+{
+  "name": "automation-pw-framework",
+  "version": "1.0.0",
+  "description": "Playwright web and api automation framework.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EmirSab/automation-pw-framework.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EmirSab/automation-pw-framework/issues"
+  },
+  "homepage": "https://github.com/EmirSab/automation-pw-framework#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.39.0",
+    "@types/node": "^20.8.10"
+  }
+}
