@@ -6,7 +6,7 @@
   "scripts": {
     "test": "playwright test --headed",
     "test:ci": "playwright test",
-    "test:report": "allure generate allure-results --clean"
+    "test:report": "allure generate allure-results --clean && allure open"
   },
   "repository": {
     "type": "git",
