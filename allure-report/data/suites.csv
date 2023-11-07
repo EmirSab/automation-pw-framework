@@ -1,3 +1,3 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Tue Nov 07 20:50:51 CET 2023","Tue Nov 07 20:50:56 CET 2023","4530","chromium","example.spec.ts","","","","has title",""
-"passed","Tue Nov 07 20:50:51 CET 2023","Tue Nov 07 20:50:56 CET 2023","4979","chromium","example.spec.ts","","","","get started link",""
+"failed","Tue Nov 07 21:32:10 CET 2023","Tue Nov 07 21:32:18 CET 2023","7228","chromium","example.spec.ts","","","","get started link",""
+"passed","Tue Nov 07 21:32:10 CET 2023","Tue Nov 07 21:32:11 CET 2023","1062","chromium","example.spec.ts","","","","has title",""

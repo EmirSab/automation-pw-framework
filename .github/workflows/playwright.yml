@@ -22,3 +22,5 @@ jobs:
         with:
           name: Test Results
           path: test-results
+      - name: Generate report
+        run: npm run test:report
