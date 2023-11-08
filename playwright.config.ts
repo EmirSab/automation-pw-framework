@@ -40,7 +40,7 @@ export default defineConfig({
     headless: true,
     actionTimeout: 6000,
   },
-
+  globalSetup: 'utils/globalSetup.ts',
   /* Configure projects for major browsers */
   projects: [
     {

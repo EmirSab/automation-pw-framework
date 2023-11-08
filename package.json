@@ -4,7 +4,7 @@
   "description": "Playwright web and api automation framework.",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test --headed",
+    "test": "cross-env test_env=test playwright test --headed",
     "test:ci": "playwright test",
     "test:report": "allure generate allure-results --clean && allure open"
   },
@@ -23,6 +23,10 @@
     "@playwright/test": "^1.39.0",
     "@types/node": "^20.8.10",
     "allure-commandline": "^2.24.1",
-    "allure-playwright": "^2.9.2"
+    "allure-playwright": "^2.9.2",
+    "cross-env": "^7.0.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
   }
 }
