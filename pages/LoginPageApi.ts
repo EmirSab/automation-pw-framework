@@ -1,5 +1,7 @@
-import { Page } from "@playwright/test";
-import ENV from '../utils/env';
+import { Page, expect, request } from "@playwright/test";
+import fetch from 'node-fetch';
+import { getLoginToken } from "../api-calls/getLoginToken";
+import { email, password } from "../data/userData";
 
 export default class LoginPageApi {
     private page: Page;
@@ -7,7 +9,15 @@ export default class LoginPageApi {
         this.page = page;
     }
 
-    async goToPage() {
-        await this.page.goto(ENV.API_URL!);
+    async verifyThePage() {
+        const response =  await fetch("https://thinking-tester-contact-list.herokuapp.com/",{
+            method: "GET"
+        });        
+        expect(response.status).toEqual(200);
+    }
+
+    async addNewContactByApi() {
+        await this.page.goto('https://thinking-tester-contact-list.herokuapp.com/contactList');
+        await this.page.pause();
     }
 }

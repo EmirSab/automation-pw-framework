@@ -6,7 +6,8 @@
   "scripts": {
     "test": "cross-env test_env=test playwright test --headed",
     "test:ci": "cross-env test_env=test playwright test",
-    "test:report": "allure generate allure-results --clean && allure open"
+    "test:report": "allure generate --clean allure-results && allure open",
+    "test:api": "npx playwright test loginApi.spec.ts"
   },
   "repository": {
     "type": "git",
@@ -22,11 +23,13 @@
   "devDependencies": {
     "@playwright/test": "^1.39.0",
     "@types/node": "^20.8.10",
+    "@types/node-fetch": "^2.6.9",
     "allure-commandline": "^2.24.1",
     "allure-playwright": "^2.9.2",
     "cross-env": "^7.0.3"
   },
   "dependencies": {
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "node-fetch": "^2.7.0"
   }
 }
