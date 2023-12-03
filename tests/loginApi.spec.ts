@@ -21,5 +21,15 @@ test.describe('Api calls that are using session storage',() => {
     test('Verify that response time is in acceptable limits, API-006', async ({ loginPageApi }) => {
         await loginPageApi.verifyThatReponseTimeIsInAcceptableLimits();
     });
+    test('Verify that API method is correct, API-007', async ({ loginPageApi }) => {
+        await loginPageApi.verifyThatApiMethodIsCorrect();
+    });
+    test('Verify that the API endpoint URL is correct, API-008', async ({ loginPageApi }) => {
+        await loginPageApi.verifyEndpointUrlIsCorrect();
+    });
+    test('Verify that the API response headers are correct, API-009', async ({ loginPageApi }) => {
+        await loginPageApi.verifyApiResponseHeaderIsCorrect();
+    });
+    
     
 })
