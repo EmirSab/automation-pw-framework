@@ -7,7 +7,9 @@
     "test": "cross-env test_env=test playwright test --headed",
     "test:ci": "cross-env test_env=test playwright test",
     "test:report": "allure generate --clean allure-results && allure open",
-    "test:api": "npx playwright test loginApi.spec.ts"
+    "test:api": "cross-env test_env=test playwright test loginApi.spec.ts",
+    "prod:api": "cross-env test_env=prod playwright test loginApi.spec.ts",
+    "dev:api": "cross-env test_env=dev playwright test loginApi.spec.ts"
   },
   "repository": {
     "type": "git",

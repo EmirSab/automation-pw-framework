@@ -9,10 +9,10 @@ test.describe('Api calls that are using session storage',() => {
     test('Add new contact using required fields by API and confirm stats code equals 201, API-002', async ({ loginPageApi }) => {
         await loginPageApi.addNewContactByApi();
     });
-    test('Verify that reponse is in the right format API-003', async ({ loginPageApi }) => {
+    test('Verify that response is in the right format API-003', async ({ loginPageApi }) => {
         await loginPageApi.verifyContentTypeOfResponse();
     });
-    test('Verify that response constains all required fields API-004', async ({ loginPageApi }) => {
+    test('Verify that response contains all required fields API-004', async ({ loginPageApi }) => {
         await loginPageApi.verifyThatReponseContainsAllRequiredFields();
     });
     test('Verify that values of the fields are correct type, API-005', async ({ loginPageApi }) => {
@@ -30,6 +30,22 @@ test.describe('Api calls that are using session storage',() => {
     test('Verify that the API response headers are correct, API-009', async ({ loginPageApi }) => {
         await loginPageApi.verifyApiResponseHeaderIsCorrect();
     });
-    
-    
+    test('Verify that the API returns an error message if the request payload is missing, API-010', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyErrorMessageIfRequestPayloadIsMissing();
+    });
+    test('Get all contacts and verify the status, API-011', async ({ loginPageApi }) =>{
+        await loginPageApi.getAllContactsAndVerifyResponseIsSuccessful();
+    });
+    test('Verify that API GET method is correct, API-012', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyApiMethodIsCorrectGetAllContacts();
+    });
+    test('Verify that the API response headers are correct in GET all accounts request, API-013', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyApiResponseHeaderIsCorrectGetAccounts();
+    });
+    test('Verify that the API endpoint URL is correct for GET all contacts, API-014', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyEndpointUrlIsCorrectGetAccounts();
+    });
+    test('Verify that the API response headers are correct GET all contacts, API-015', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyEndpointUrlIsCorrectGetAccounts();
+    });
 })
