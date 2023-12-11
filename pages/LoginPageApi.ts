@@ -4,13 +4,13 @@ import {contentType, email, firstNameData, firstNameEmpty, lastNameData, lastNam
 import { getLoginToken } from "../api-calls/getLoginToken";
 import { stat } from "fs";
 import ENV from '../utils/env';
+import {CalculateTimeDifference} from "../utils/utils";
 const data = JSON.parse(JSON.stringify(require('../auth.json')));
 const token = data.cookies[0].value;
 export default class LoginPageApi {
     private page: Page;
     readonly firstName: string;
     readonly lastName: string;
-    readonly typeOfTheRequiredFields: string;
     readonly url: string;
     readonly post: string;
     readonly get: string;
@@ -20,7 +20,6 @@ export default class LoginPageApi {
         this.page = page;
         this.firstName = 'firstName';
         this.lastName = 'lastName';
-        this.typeOfTheRequiredFields = 'string';
         this.post = 'Created';
         this.url = ENV.API_URL!;
         this.contacts = '/contacts';
@@ -57,6 +56,7 @@ export default class LoginPageApi {
     }
 
     private async getAllContacts() {
+        var dateTime = new Date();
         const requestContext = await request.newContext();
         const responseAddContact = await requestContext.get(this.url + this.contacts, {
             headers: {
@@ -68,7 +68,7 @@ export default class LoginPageApi {
         const statusText = responseAddContact.statusText();
         const contentType = responseAddContact.headers();
         const url = responseAddContact.url();
-        return [status, contentType, body,statusText,url];
+        return [status, contentType, body,statusText,url,dateTime];
     }
 
     //Verify that the API returns an error message if the requested resource does not exist.
@@ -77,7 +77,29 @@ export default class LoginPageApi {
     //Verify that the API returns a success message if the resource is deleted successfully.
     //Verify that the API returns a success message if the resource is retrieved successfully
 
+    //#region Get Contact
+
+    //#endregion
+
     //#region GET
+    async verifyThatResponseTimeIsInAcceptableLimitsGetAccounts() {
+        const responseTime = await this.getAllContacts();
+        const seconds = CalculateTimeDifference(responseTime[5],responseTime[1]['date']);
+        expect(seconds).toBeLessThan(2);
+    }
+    async verifyThatResponseContainsCorrectDataTypeForFieldsGetAccounts() {
+        const requiredFieldsTypes = await this.getAllContacts();
+        requiredFieldsTypes[2].forEach(function (val) {
+            expect(typeof val['firstName']).toEqual(expect.any(String));
+            expect(typeof val['lastname']).toEqual(expect.any(String));
+        });
+    }
+    async verifyThatResponseContainsAllFieldsGetAccounts() {
+        const requiredFields = await this.getAllContacts();
+        Object.keys(requiredFields[2]).forEach(key => {
+            expect(Object.keys(requiredFields[2][key])).toEqual(expect.arrayContaining([this.firstName,this.lastName]));
+        });
+    }
     async verifyApiResponseHeaderIsCorrectGetAccounts() {
         const header = await this.getAllContacts();
         expect(header[1]['server']).toEqual(this.server);
@@ -100,6 +122,7 @@ export default class LoginPageApi {
         expect(apiStatus[3]).toEqual(this.get);
     }
     //#endregion
+
     async verifyErrorMessageIfRequestPayloadIsMissing() {
         const status = await this.addNewContact(firstNameEmpty, lastNameEmpty);
         expect(status[0]).toEqual(400);
@@ -125,26 +148,20 @@ export default class LoginPageApi {
         const contentTypeValue = contentTypeFromApi[1]['content-type'];
         expect(contentTypeValue).toEqual(contentType);
     }
-    async verifyThatReponseContainsAllRequiredFields() {
+    async verifyThatResponseContainsAllRequiredFields() {
         const requiredFields = await this.addNewContact(firstNameData,lastNameData);
         expect(Object.keys(requiredFields[2])).toEqual(expect.arrayContaining([this.firstName,this.lastName]));
     }
-    async verifyThatReponseContainsCorrectDataForRequiredField() {
+    async verifyThatResponseContainsCorrectDataForRequiredField() {
         const requiredFieldsTypes = await this.addNewContact(firstNameData,lastNameData);
         const firstNameValue = requiredFieldsTypes[2]['firstName'];
         const lastNameValue = requiredFieldsTypes[2]['lastName'];
-        expect(typeof firstNameValue).toEqual(this.typeOfTheRequiredFields);
-        expect(typeof lastNameValue).toEqual(this.typeOfTheRequiredFields);
+        expect(typeof firstNameValue).toEqual(expect.any(String));
+        expect(typeof lastNameValue).toEqual(expect.any(String));
     }
-    async verifyThatReponseTimeIsInAcceptableLimits() {
+    async verifyThatResponseTimeIsInAcceptableLimits() {
         const responseTime = await this.addNewContact(firstNameData,lastNameData);
-        const startExecutionDateTime = responseTime[3];
-        const endExecutionDateTime = new Date(responseTime[1]['date']);
-        const endExecutionDateTimeToDate = new Date(endExecutionDateTime);
-        const startTime = startExecutionDateTime.getTime();
-        const endTime = endExecutionDateTimeToDate.getTime();
-        const diff = startTime - endTime;
-        const seconds = Math.floor(diff / 1000);
+        const seconds = CalculateTimeDifference(responseTime[3],responseTime[1]['date']);
         expect(seconds).toBeLessThan(2);
     }
 }

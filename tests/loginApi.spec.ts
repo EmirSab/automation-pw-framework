@@ -13,13 +13,13 @@ test.describe('Api calls that are using session storage',() => {
         await loginPageApi.verifyContentTypeOfResponse();
     });
     test('Verify that response contains all required fields API-004', async ({ loginPageApi }) => {
-        await loginPageApi.verifyThatReponseContainsAllRequiredFields();
+        await loginPageApi.verifyThatResponseContainsAllRequiredFields();
     });
     test('Verify that values of the fields are correct type, API-005', async ({ loginPageApi }) => {
-        await loginPageApi.verifyThatReponseContainsCorrectDataForRequiredField();
+        await loginPageApi.verifyThatResponseContainsCorrectDataForRequiredField();
     });
     test('Verify that response time is in acceptable limits, API-006', async ({ loginPageApi }) => {
-        await loginPageApi.verifyThatReponseTimeIsInAcceptableLimits();
+        await loginPageApi.verifyThatResponseTimeIsInAcceptableLimits();
     });
     test('Verify that API method is correct, API-007', async ({ loginPageApi }) => {
         await loginPageApi.verifyThatApiMethodIsCorrect();
@@ -45,7 +45,16 @@ test.describe('Api calls that are using session storage',() => {
     test('Verify that the API endpoint URL is correct for GET all contacts, API-014', async ({ loginPageApi }) =>{
         await loginPageApi.verifyEndpointUrlIsCorrectGetAccounts();
     });
-    test('Verify that the API response headers are correct GET all contacts, API-015', async ({ loginPageApi }) =>{
-        await loginPageApi.verifyEndpointUrlIsCorrectGetAccounts();
+    test('Verify the content of the response is correct GET all contacts, API-015', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyContentTypeOfResponseGetAccounts();
+    });
+    test('Verify that response time is in acceptable limits GET all contacts, API-016', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyThatResponseTimeIsInAcceptableLimitsGetAccounts();
+    });
+    test('Verify that response contains all required fields, GET all contacts, API-017', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyThatResponseContainsAllFieldsGetAccounts();
+    });
+    test('Verify that response contains correct data type for the required fields, GET all contacts, API-018', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyThatResponseContainsCorrectDataTypeForFieldsGetAccounts();
     });
 })
