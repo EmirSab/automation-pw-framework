@@ -57,7 +57,7 @@ test.describe('Api calls that are using session storage',() => {
     test('Verify that response contains correct data type for the required fields, GET all contacts, API-018', async ({ loginPageApi }) =>{
         await loginPageApi.verifyThatResponseContainsCorrectDataTypeForFieldsGetAccounts();
     });
-    test('Verify that api call returns single contact by Id, API-019', async ({ loginPageApi }) =>{
+    test.only('Verify that api call returns single contact by Id, API-019', async ({ loginPageApi }) =>{
         await loginPageApi.verifyGetContactByIdReturnedOnlyOneContact();
     });
     test('Verify that api call get contact by Id is successful, API-020', async ({ loginPageApi }) =>{

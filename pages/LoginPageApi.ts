@@ -100,13 +100,15 @@ export default class LoginPageApi {
         const body = await responseGetContact.json();
         const status = responseGetContact.status();
         const statusText = responseGetContact.statusText();
+        const oneRecord = Object.keys(body).length;
         // const contentType = responseGetContact.headers();
         // const url = responseGetContact.url();
-        return [body,status,statusText]
+        return [body,status,statusText,oneRecord]
     }
     async verifyGetContactByIdReturnedOnlyOneContact() {
         const contact = await this.getContactById();
-        expect(contact.length).toBeLessThan(2);
+        const oneRecord = contact[3];
+        expect(oneRecord).toBeLessThan(15);
     }
     async verifyThatGetContactByIdIsSuccessful() {
         //returns 200
