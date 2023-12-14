@@ -1,8 +1,6 @@
 import { Page, expect, request } from "@playwright/test";
 import fetch from 'node-fetch';
 import {contentType, email, firstNameData, firstNameEmpty, lastNameData, lastNameEmpty, password} from "../data/userData";
-import { getLoginToken } from "../api-calls/getLoginToken";
-import { stat } from "fs";
 import ENV from '../utils/env';
 import {CalculateTimeDifference} from "../utils/utils";
 const data = JSON.parse(JSON.stringify(require('../auth.json')));
@@ -16,6 +14,7 @@ export default class LoginPageApi {
     readonly get: string;
     readonly contacts: string;
     readonly server: string;
+    readonly contactId: string;
     constructor(page: Page) {
         this.page = page;
         this.firstName = 'firstName';
@@ -25,6 +24,7 @@ export default class LoginPageApi {
         this.contacts = '/contacts';
         this.server = 'Cowboy';
         this.get = 'OK';
+        this.contactId = '/contacts/655b463ae85cba0013e859f8'
     }
 
 
@@ -58,16 +58,16 @@ export default class LoginPageApi {
     private async getAllContacts() {
         var dateTime = new Date();
         const requestContext = await request.newContext();
-        const responseAddContact = await requestContext.get(this.url + this.contacts, {
+        const responseGetsContacts = await requestContext.get(this.url + this.contacts, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
         });
-        const body = await responseAddContact.json();
-        const status = responseAddContact.status();
-        const statusText = responseAddContact.statusText();
-        const contentType = responseAddContact.headers();
-        const url = responseAddContact.url();
+        const body = await responseGetsContacts.json();
+        const status = responseGetsContacts.status();
+        const statusText = responseGetsContacts.statusText();
+        const contentType = responseGetsContacts.headers();
+        const url = responseGetsContacts.url();
         return [status, contentType, body,statusText,url,dateTime];
     }
 
@@ -78,7 +78,45 @@ export default class LoginPageApi {
     //Verify that the API returns a success message if the resource is retrieved successfully
 
     //#region Get Contact
-
+    private async getIdsFromAllContactsForTheUser() {
+        var contactId = await this.getAllContacts();
+        var arrayOfContacts = contactId[2];
+        let arrayOfIds = [];
+        arrayOfContacts.forEach(val => {
+            arrayOfIds.push(val['_id']);
+        })
+        return arrayOfIds;
+    }
+    private async getContactById() {
+        var idArray = await  this.getIdsFromAllContactsForTheUser();
+        var randomId = idArray[Math.floor(Math.random() * idArray.length)];
+        var dateTime = new Date();
+        const requestContext = await request.newContext();
+        const responseGetContact = await requestContext.get(this.url + this.contacts + `/${randomId}`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        const body = await responseGetContact.json();
+        const status = responseGetContact.status();
+        const statusText = responseGetContact.statusText();
+        // const contentType = responseGetContact.headers();
+        // const url = responseGetContact.url();
+        return [body,status,statusText]
+    }
+    async verifyGetContactByIdReturnedOnlyOneContact() {
+        const contact = await this.getContactById();
+        expect(contact.length).toBeLessThan(2);
+    }
+    async verifyThatGetContactByIdIsSuccessful() {
+        //returns 200
+        const status =  await this.getContactById();
+        expect(status[1]).toEqual(200);
+    }
+    async verifyGeContactByIdSuccessfulStatusText() {
+        const statusText =  await this.getContactById();
+        expect(statusText[2]).toEqual('OK');
+    }
     //#endregion
 
     //#region GET
