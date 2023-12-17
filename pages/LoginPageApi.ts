@@ -101,9 +101,9 @@ export default class LoginPageApi {
         const status = responseGetContact.status();
         const statusText = responseGetContact.statusText();
         const oneRecord = Object.keys(body).length;
-        // const contentType = responseGetContact.headers();
+        const contentType = responseGetContact.headers();
         // const url = responseGetContact.url();
-        return [body,status,statusText,oneRecord]
+        return [body,status,statusText,oneRecord,contentType]
     }
     async verifyGetContactByIdReturnedOnlyOneContact() {
         const contact = await this.getContactById();
@@ -118,6 +118,32 @@ export default class LoginPageApi {
     async verifyGeContactByIdSuccessfulStatusText() {
         const statusText =  await this.getContactById();
         expect(statusText[2]).toEqual('OK');
+    }
+    async verifyThatMoreThanOneContactsIsReturnedWhenEmptyStringIsSent() {
+        const emptyId = ' ';
+        const requestContext = await request.newContext();
+        const responseGetContact = await requestContext.get(this.url + this.contacts + `/${emptyId}`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        const body = await responseGetContact.json();
+        expect(body.length).toBeGreaterThan(1);
+    }
+    async verifyErrorMessageIfWrongIdIsSent() {
+        let emptyId = '/0gfdgdfgfd';
+        const requestContext = await request.newContext();
+        const responseGetContact = await requestContext.get(this.url + this.contacts + emptyId, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        const status = responseGetContact.status();
+        expect(status).toEqual(400);
+    }
+    async verifyThatResponseHeaderIsCorrectGetContactById() {
+        const header = await this.getContactById();
+        expect(header[4]['server']).toEqual(this.server);
     }
     //#endregion
 

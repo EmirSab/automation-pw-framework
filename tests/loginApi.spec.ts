@@ -57,7 +57,7 @@ test.describe('Api calls that are using session storage',() => {
     test('Verify that response contains correct data type for the required fields, GET all contacts, API-018', async ({ loginPageApi }) =>{
         await loginPageApi.verifyThatResponseContainsCorrectDataTypeForFieldsGetAccounts();
     });
-    test.only('Verify that api call returns single contact by Id, API-019', async ({ loginPageApi }) =>{
+    test('Verify that api call returns single contact by Id, API-019', async ({ loginPageApi }) =>{
         await loginPageApi.verifyGetContactByIdReturnedOnlyOneContact();
     });
     test('Verify that api call get contact by Id is successful, API-020', async ({ loginPageApi }) =>{
@@ -68,5 +68,14 @@ test.describe('Api calls that are using session storage',() => {
     });
     test('Verify that api call get contact by Id status text is successful, API-022', async ({ loginPageApi }) =>{
         await loginPageApi.verifyGeContactByIdSuccessfulStatusText();
+    });
+    test('Verify that more than one contact is returned when empty Id is sent, API-023', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyThatMoreThanOneContactsIsReturnedWhenEmptyStringIsSent();
+    });
+    test('Verify the error message if wrong Id is sent, API-024', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyErrorMessageIfWrongIdIsSent();
+    });
+    test('Verify that response header is correct Get Contact by Id, API-025', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyThatResponseHeaderIsCorrectGetContactById();
     });
 })
