@@ -77,6 +77,9 @@ export default class LoginPageApi {
     //Verify that the API returns a success message if the resource is deleted successfully.
     //Verify that the API returns a success message if the resource is retrieved successfully
 
+    //#region Put
+    //#endregion
+
     //#region Get Contact
     private async getIdsFromAllContactsForTheUser() {
         var contactId = await this.getAllContacts();
@@ -144,6 +147,17 @@ export default class LoginPageApi {
     async verifyThatResponseHeaderIsCorrectGetContactById() {
         const header = await this.getContactById();
         expect(header[4]['server']).toEqual(this.server);
+    }
+    async verifyThatResponseContainsAllFieldsGetContactById() {
+        const requiredFields = await this.getContactById();
+        expect(Object.keys(requiredFields[0])).toEqual(expect.arrayContaining([this.firstName,this.lastName]));
+    }
+    async verifyThatResponseContainsCorrectDataTypeForGetContactById() {
+        const requiredFieldsTypes = await this.getContactById();
+        const firstNameValue = requiredFieldsTypes[0]['firstName'];
+        const lastNameValue = requiredFieldsTypes[0]['lastName'];
+        expect(typeof firstNameValue).toEqual(expect.any(String));
+        expect(typeof lastNameValue).toEqual(expect.any(String));
     }
     //#endregion
 

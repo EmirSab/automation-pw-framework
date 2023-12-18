@@ -78,4 +78,10 @@ test.describe('Api calls that are using session storage',() => {
     test('Verify that response header is correct Get Contact by Id, API-025', async ({ loginPageApi }) =>{
         await loginPageApi.verifyThatResponseHeaderIsCorrectGetContactById();
     });
+    test('Verify that response Get Contact by Id contains all required fields, API-026', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyThatResponseContainsAllFieldsGetContactById();
+    });
+    test('Verify that response Get Contact by Id contains correct data type, API-027', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyThatResponseContainsCorrectDataTypeForGetContactById();
+    });
 })
