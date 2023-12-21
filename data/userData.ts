@@ -5,3 +5,9 @@ export const firstNameData = 'TestFirstName';
 export const lastNameData = 'TestLastName';
 export const firstNameEmpty = '';
 export const lastNameEmpty = '';
+
+export const firstNameTwentyCharacters = 'TestFirstName1234567';
+export  const firstNameTwentyOneCharacters = 'TestFirstName12345678';
+export  const firstNameNineteenCharacters = 'TestFirstName123456';
+
+

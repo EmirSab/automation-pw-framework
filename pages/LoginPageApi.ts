@@ -1,6 +1,15 @@
 import { Page, expect, request } from "@playwright/test";
 import fetch from 'node-fetch';
-import {contentType, email, firstNameData, firstNameEmpty, lastNameData, lastNameEmpty, password} from "../data/userData";
+import {
+    contentType,
+    email,
+    firstNameData,
+    firstNameEmpty, firstNameNineteenCharacters,
+    firstNameTwentyCharacters, firstNameTwentyOneCharacters,
+    lastNameData,
+    lastNameEmpty,
+    password
+} from "../data/userData";
 import ENV from '../utils/env';
 import {CalculateTimeDifference} from "../utils/utils";
 const data = JSON.parse(JSON.stringify(require('../auth.json')));
@@ -243,5 +252,33 @@ export default class LoginPageApi {
         const responseTime = await this.addNewContact(firstNameData,lastNameData);
         const seconds = CalculateTimeDifference(responseTime[3],responseTime[1]['date']);
         expect(seconds).toBeLessThan(2);
+    }
+
+    async addUserWithAllFieldsAndVerifySuccessfulStatus() {
+
+    }
+    async verifyMaximumCharLengthForFirsNameField() {
+        //20 chars
+        const status = await this.addNewContact(firstNameTwentyCharacters,lastNameData);
+        expect(status[0]).toEqual(201);
+    }
+    async verifyMaximumCharLengthForFirsNameFieldPlusOneChar() {
+        //21 chars
+        const status = await this.addNewContact(firstNameTwentyOneCharacters,lastNameData);
+        expect(status[0]).toEqual(400);
+    }
+    async verifyMaximumCharLengthForFirsNameFieldMinusOneChar() {
+        //19 chars
+        const status = await this.addNewContact(firstNameNineteenCharacters,lastNameData);
+        expect(status[0]).toEqual(201);
+    }
+    async verifyMaximumCharLengthForLastNameField() {
+        //20 chars
+    }
+    async verifyMaximumCharLengthForLastNameFieldPlusOneChar() {
+        //21 chars
+    }
+    async verifyMaximumCharLengthForLastNameFieldMinusOneChar() {
+        //19 chars
     }
 }

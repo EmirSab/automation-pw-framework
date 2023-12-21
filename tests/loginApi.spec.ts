@@ -84,4 +84,13 @@ test.describe('Api calls that are using session storage',() => {
     test('Verify that response Get Contact by Id contains correct data type, API-027', async ({ loginPageApi }) =>{
         await loginPageApi.verifyThatResponseContainsCorrectDataTypeForGetContactById();
     });
+    test('Verify that First name field can have 20 chars and test is successful, API-028', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyMaximumCharLengthForFirsNameField();
+    });
+    test('Verify that First name field cant have more than 20 chars and test fails, API-029', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyMaximumCharLengthForFirsNameFieldPlusOneChar();
+    });
+    test('Verify that First name field can have 19 chars and test is successful, API-030', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyMaximumCharLengthForFirsNameFieldMinusOneChar();
+    });
 })
