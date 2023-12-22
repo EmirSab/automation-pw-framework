@@ -93,4 +93,13 @@ test.describe('Api calls that are using session storage',() => {
     test('Verify that First name field can have 19 chars and test is successful, API-030', async ({ loginPageApi }) =>{
         await loginPageApi.verifyMaximumCharLengthForFirsNameFieldMinusOneChar();
     });
+    test('Verify that Last name field can have 20 chars and test is successful, API-031', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyMaximumCharLengthForLastNameField();
+    });
+    test('Verify that Last name field cant have more than 20 chars and test fails, API-032', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyMaximumCharLengthForLastNameFieldPlusOneChar();
+    });
+    test('Verify that Last name field can have 19 chars and test is successful, API-033', async ({ loginPageApi }) =>{
+        await loginPageApi.verifyMaximumCharLengthForLastNameFieldMinusOneChar();
+    });
 })

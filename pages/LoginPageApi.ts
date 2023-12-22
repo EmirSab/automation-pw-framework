@@ -7,7 +7,7 @@ import {
     firstNameEmpty, firstNameNineteenCharacters,
     firstNameTwentyCharacters, firstNameTwentyOneCharacters,
     lastNameData,
-    lastNameEmpty,
+    lastNameEmpty, lastNameNineteenCharacters, lastNameTwentyCharacters, lastNameTwentyOneCharacters,
     password
 } from "../data/userData";
 import ENV from '../utils/env';
@@ -274,11 +274,17 @@ export default class LoginPageApi {
     }
     async verifyMaximumCharLengthForLastNameField() {
         //20 chars
+        const status = await this.addNewContact(firstNameData,lastNameTwentyCharacters);
+        expect(status[0]).toEqual(201);
     }
     async verifyMaximumCharLengthForLastNameFieldPlusOneChar() {
         //21 chars
+        const status = await this.addNewContact(firstNameData,lastNameTwentyOneCharacters);
+        expect(status[0]).toEqual(400);
     }
     async verifyMaximumCharLengthForLastNameFieldMinusOneChar() {
         //19 chars
+        const status = await this.addNewContact(firstNameData,lastNameNineteenCharacters);
+        expect(status[0]).toEqual(201);
     }
 }
