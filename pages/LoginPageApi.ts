@@ -1,14 +1,15 @@
 import { Page, expect, request } from "@playwright/test";
 import fetch from 'node-fetch';
 import {
-    contentType,
-    email,
+    birthday, city,
+    contentType, country,
+    email, emailForContact, emptyPhone,
     firstNameData,
     firstNameEmpty, firstNameNineteenCharacters,
-    firstNameTwentyCharacters, firstNameTwentyOneCharacters,
+    firstNameTwentyCharacters, firstNameTwentyOneCharacters, IncorrectPhone,
     lastNameData,
     lastNameEmpty, lastNameNineteenCharacters, lastNameTwentyCharacters, lastNameTwentyOneCharacters,
-    password
+    password, phone, postalCode, stateProvince, street1, street2
 } from "../data/userData";
 import ENV from '../utils/env';
 import {CalculateTimeDifference} from "../utils/utils";
@@ -51,6 +52,36 @@ export default class LoginPageApi {
             data: {
                 firstName: firstNameData,
                 lastName: lastNameData
+            },
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        const body = await responseAddContact.json();
+        const status = responseAddContact.status();
+        const contentType = responseAddContact.headers();
+        const statusText = responseAddContact.statusText();
+        const url = responseAddContact.url();
+        return [status, contentType, body, dateTime,statusText,url];
+    }
+    private async addNewContactWithAllFields(firstNameData:string, lastNameData:string, birthday:string, emailForContact:string,phone:string,
+                                             street1: string,street2: string, city: string, stateProvince: string, postalCode:string,
+                                             country: string) {
+        var dateTime = new Date();
+        const requestContext = await request.newContext();
+        const responseAddContact = await requestContext.post(this.url + this.contacts, {
+            data: {
+                firstName: firstNameData,
+                lastName: lastNameData,
+                birthday: birthday,
+                emailForContact: emailForContact,
+                phone: phone,
+                street1:street1,
+                street2: street2,
+                city:city,
+                stateProvince: stateProvince,
+                postalCode: postalCode,
+                country: country
             },
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -254,9 +285,25 @@ export default class LoginPageApi {
         expect(seconds).toBeLessThan(2);
     }
 
+    //#region Add Contact with all fields
     async addUserWithAllFieldsAndVerifySuccessfulStatus() {
-
+        const apiStatus = await this.addNewContactWithAllFields(firstNameData,lastNameData,birthday,emailForContact,
+            phone,street1,street2,city,stateProvince,postalCode,country);
+        expect(apiStatus[0]).toEqual(201);
     }
+    async addUserWithAllFieldsAndVerifyErrorStatus() {
+        //one field is not correct value
+        const apiStatus = await this.addNewContactWithAllFields(firstNameData,lastNameData,birthday,emailForContact,
+            IncorrectPhone,street1,street2,city,stateProvince,postalCode,country);
+        expect(apiStatus[0]).toEqual(400);
+    }
+    async addUserWithPhoneFieldMissingAndVerifyErrorStatus() {
+        //One filed is missing and request should be successful
+        const apiStatus = await this.addNewContactWithAllFields(firstNameData,lastNameData,birthday,emailForContact,
+            emptyPhone,street1,street2,city,stateProvince,postalCode,country);
+        expect(apiStatus[0]).toEqual(400);
+    }
+    //#endregion
     async verifyMaximumCharLengthForFirsNameField() {
         //20 chars
         const status = await this.addNewContact(firstNameTwentyCharacters,lastNameData);

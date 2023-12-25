@@ -102,4 +102,13 @@ test.describe('Api calls that are using session storage',() => {
     test('Verify that Last name field can have 19 chars and test is successful, API-033', async ({ loginPageApi }) =>{
         await loginPageApi.verifyMaximumCharLengthForLastNameFieldMinusOneChar();
     });
+    test('Add contact with all fields and verify successful status, API-034', async ({ loginPageApi }) =>{
+        await loginPageApi.addUserWithAllFieldsAndVerifySuccessfulStatus();
+    });
+    test('Add contact with all fields where one field is incorrect and verify error status, API-035', async ({ loginPageApi }) =>{
+        await loginPageApi.addUserWithAllFieldsAndVerifyErrorStatus();
+    });
+    test('Add contact with all fields where phone field is empty and verify error status, API-036', async ({ loginPageApi }) =>{
+        await loginPageApi.addUserWithPhoneFieldMissingAndVerifyErrorStatus();
+    });
 })
