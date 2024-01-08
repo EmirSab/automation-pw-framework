@@ -111,4 +111,13 @@ test.describe('Api calls that are using session storage',() => {
     test('Add contact with all fields where phone field is empty and verify error status, API-036', async ({ loginPageApi }) =>{
         await loginPageApi.addUserWithPhoneFieldMissingAndVerifyErrorStatus();
     });
+    test('Add contact with all fields where birthday field is empty and verify success status, API-037', async ({ loginPageApi }) =>{
+        await loginPageApi.addUserWithBirthdayFieldEmptyAndVerifySuccessStatus();
+    });
+    test('Add contact with all fields where birthday field is incorrect and verify success status, API-038', async ({ loginPageApi }) =>{
+        await loginPageApi.addUserWithIncorrectBirthdayFieldAndVerifySuccessStatus();
+    });
+    test('Add contact with all fields where email field is empty and verify success status, API-039', async ({ loginPageApi }) =>{
+        await loginPageApi.addUserWithEmailFieldEmptyAndVerifySuccessStatus();
+    });
 })

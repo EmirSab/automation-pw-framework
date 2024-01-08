@@ -1,12 +1,12 @@
 import { Page, expect, request } from "@playwright/test";
 import fetch from 'node-fetch';
 import {
-    birthday, city,
+    birthdate, city,
     contentType, country,
-    email, emailForContact, emptyPhone,
+    email, emailForContact, emptyBirthday, emptyEmail, emptyPhone,
     firstNameData,
     firstNameEmpty, firstNameNineteenCharacters,
-    firstNameTwentyCharacters, firstNameTwentyOneCharacters, IncorrectPhone,
+    firstNameTwentyCharacters, firstNameTwentyOneCharacters, incorrectBirthday, IncorrectPhone,
     lastNameData,
     lastNameEmpty, lastNameNineteenCharacters, lastNameTwentyCharacters, lastNameTwentyOneCharacters,
     password, phone, postalCode, stateProvince, street1, street2
@@ -64,7 +64,7 @@ export default class LoginPageApi {
         const url = responseAddContact.url();
         return [status, contentType, body, dateTime,statusText,url];
     }
-    private async addNewContactWithAllFields(firstNameData:string, lastNameData:string, birthday:string, emailForContact:string,phone:string,
+    private async addNewContactWithAllFields(firstNameData:string, lastNameData:string, birthdate:string, emailForContact:string,phone:string,
                                              street1: string,street2: string, city: string, stateProvince: string, postalCode:string,
                                              country: string) {
         var dateTime = new Date();
@@ -73,8 +73,8 @@ export default class LoginPageApi {
             data: {
                 firstName: firstNameData,
                 lastName: lastNameData,
-                birthday: birthday,
-                emailForContact: emailForContact,
+                birthdate: birthdate,
+                email: emailForContact,
                 phone: phone,
                 street1:street1,
                 street2: street2,
@@ -87,6 +87,7 @@ export default class LoginPageApi {
                 "Authorization": `Bearer ${token}`
             }
         });
+
         const body = await responseAddContact.json();
         const status = responseAddContact.status();
         const contentType = responseAddContact.headers();
@@ -94,7 +95,36 @@ export default class LoginPageApi {
         const url = responseAddContact.url();
         return [status, contentType, body, dateTime,statusText,url];
     }
+    private async addNewContactNoPhoneField(firstNameData:string, lastNameData:string, birthday:string, emailForContact:string,
+                                             street1: string,street2: string, city: string, stateProvince: string, postalCode:string,
+                                             country: string) {
+        var dateTime = new Date();
+        const requestContext = await request.newContext();
+        const responseAddContact = await requestContext.post(this.url + this.contacts, {
+            data: {
+                firstName: firstNameData,
+                lastName: lastNameData,
+                birthday: birthday,
+                email: emailForContact,
+                street1:street1,
+                street2: street2,
+                city:city,
+                stateProvince: stateProvince,
+                postalCode: postalCode,
+                country: country
+            },
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
 
+        const body = await responseAddContact.json();
+        const status = responseAddContact.status();
+        const contentType = responseAddContact.headers();
+        const statusText = responseAddContact.statusText();
+        const url = responseAddContact.url();
+        return [status, contentType, body, dateTime,statusText,url];
+    }
     private async getAllContacts() {
         var dateTime = new Date();
         const requestContext = await request.newContext();
@@ -287,22 +317,41 @@ export default class LoginPageApi {
 
     //#region Add Contact with all fields
     async addUserWithAllFieldsAndVerifySuccessfulStatus() {
-        const apiStatus = await this.addNewContactWithAllFields(firstNameData,lastNameData,birthday,emailForContact,
+        const apiStatus = await this.addNewContactWithAllFields(firstNameData,lastNameData,birthdate,emailForContact,
             phone,street1,street2,city,stateProvince,postalCode,country);
         expect(apiStatus[0]).toEqual(201);
     }
     async addUserWithAllFieldsAndVerifyErrorStatus() {
         //one field is not correct value
-        const apiStatus = await this.addNewContactWithAllFields(firstNameData,lastNameData,birthday,emailForContact,
+        const apiStatus = await this.addNewContactWithAllFields(firstNameData,lastNameData,birthdate,emailForContact,
             IncorrectPhone,street1,street2,city,stateProvince,postalCode,country);
         expect(apiStatus[0]).toEqual(400);
     }
     async addUserWithPhoneFieldMissingAndVerifyErrorStatus() {
-        //One filed is missing and request should be successful
-        const apiStatus = await this.addNewContactWithAllFields(firstNameData,lastNameData,birthday,emailForContact,
+        const apiStatus = await this.addNewContactWithAllFields(firstNameData,lastNameData,birthdate,emailForContact,
             emptyPhone,street1,street2,city,stateProvince,postalCode,country);
         expect(apiStatus[0]).toEqual(400);
     }
+    async addUserWithBirthdayFieldEmptyAndVerifySuccessStatus() {
+        const apiStatus = await this.addNewContactWithAllFields(firstNameData,lastNameData,emptyBirthday,emailForContact,
+            emptyPhone,street1,street2,city,stateProvince,postalCode,country);
+        expect(apiStatus[0]).toEqual(400);
+    }
+    async addUserWithIncorrectBirthdayFieldAndVerifySuccessStatus() {
+        const apiStatus = await this.addNewContactWithAllFields(firstNameData,lastNameData,incorrectBirthday,emailForContact,
+            emptyPhone,street1,street2,city,stateProvince,postalCode,country);
+        expect(apiStatus[0]).toEqual(400);
+    }
+    async addUserWithEmailFieldEmptyAndVerifySuccessStatus() {
+        const apiStatus = await this.addNewContactWithAllFields(firstNameData,lastNameData,birthdate,emptyEmail,
+            emptyPhone,street1,street2,city,stateProvince,postalCode,country);
+        expect(apiStatus[0]).toEqual(400);
+    }
+    async addUserWithStreet1FieldMissingAndVerifyErrorStatus() {}
+    async verifyCorrectDateFormatForBirthdayField() {}
+    async verifyCorrectEmailFormatForEmailField() {}
+    async verifyCorrectPhoneFormatForPhoneField() {}
+
     //#endregion
     async verifyMaximumCharLengthForFirsNameField() {
         //20 chars

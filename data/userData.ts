@@ -4,12 +4,16 @@ export const contentType = 'application/json; charset=utf-8';
 export const firstNameData = 'TestFirstName';
 export const lastNameData = 'TestLastName';
 
-export const birthday = '1980-05-25'
+export const birthdate = '1980-05-25'
+export const incorrectBirthday = '1980-0fsds5-25gff'
+export const emptyBirthday = '';
 export const emailForContact = 'fake.email@fake.com';
+export const emptyEmail = '';
 export const phone = '387555666';
 export const IncorrectPhone = '+387555666';
 export  const emptyPhone = '';
 export const street1 = 'Fake Street 2';
+export const emptyStreet1 = '';
 export const street2 = 'Fake Street 3';
 export const city = 'FakeTown';
 export const stateProvince = 'Fake Province';
